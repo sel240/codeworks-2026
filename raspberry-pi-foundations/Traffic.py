@@ -2,12 +2,12 @@ from gpiozero import LED
 from time import sleep
 
 # Pin definitions
-bluelight = 17
-yellowlight = 27
-greenlight = 22
+greenlight = 15
+yellowlight = 17
+redlight = 18
 
 # Setup LED objects
-blue = LED(bluelight)
+blue = LED(redlight)
 yellow = LED(yellowlight)
 green = LED(greenlight)
 
@@ -16,19 +16,19 @@ def loop():
     blue.on()
     yellow.off()
     green.off()
-    sleep(1.0)
+    sleep(10)
 
     # Green ON, others OFF
     blue.off()
     yellow.off()
     green.on()
-    sleep(0.7)
+    sleep(7)
 
     # Yellow ON, others OFF
     blue.off()
     yellow.on()
     green.off()
-    sleep(0.3)
+    sleep(3.3333333333333333333333333333333333)
 
 if __name__ == "__main__":
     try:
