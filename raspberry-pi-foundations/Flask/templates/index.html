@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LED Control</title>
+</head>
+<body>
+
+<h1>LED Control Panel</h1>
+
+<h2>Red</h2>
+<form method="POST" action="/control">
+    <input type="hidden" name="led" value="1">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Orange</h2>
+<form method="POST" action="/control">
+    <input type="hidden" name="led" value="2">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Yellow</h2>
+<form method="POST" action="/control">
+    <input type="hidden" name="led" value="3">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Green</h2>
+<form method="POST" action="/control">
+    <input type="hidden" name="led" value="4">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Blue</h2>
+<form method="POST" action="/control">
+    <input type="hidden" name="led" value="5">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>White</h2>
+<form method="POST" action="/control">
+    <input type="hidden" name="led" value="6">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Blink all</h2>
+<form method="POST" action="/control">
+    <input type="hidden" name="led" value="blink all">
+    <button name="action" value="blink">blink</button>
+
+</body>
+</html>
