@@ -1,8 +1,13 @@
-from flask import Flask, render_template, request
-from gpiozero import LED, TonalBuzzer
-from time import sleep
-from gpiozero.tones import Tone
 import random
+from time import sleep
+from flask import Flask, render_template, request, jsonify
+from gpiozero import LED, TonalBuzzer
+from gpiozero.tones import Tone
+
+# Optional: Force software PWM if hardware PWM isn't available on GPIO 8
+# from gpiozero.pins.rpigpio import RPiGPIOFactory
+# from gpiozero import Device
+# Device.pin_factory = RPiGPIOFactory()
 
 app = Flask(__name__)
 
@@ -15,10 +20,12 @@ led5 = LED(25)
 led6 = LED(24)
 
 buzzer = TonalBuzzer(8)
-tempo = 100
-whole_note = (6000 * 4) / tempo
 
-# Tones
+# Tempo and Timing (seconds)
+tempo = 100
+whole_note = (60 * 4) / tempo  # 2.4 seconds
+
+# Musical Tones
 C4 = Tone(261.63)
 D4 = Tone(293.66)
 E4 = Tone(329.63)
@@ -27,32 +34,62 @@ G4 = Tone(392.00)
 A4 = Tone(440.00)
 B4 = Tone(493.88)
 
+@app.route('/leds')
+def leds():
+    return render_template('control.html')
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/music')
+def music():
+    # Extract the JSON data sent by the JavaScript fetch request
+    data = request.get_json()
+    
+    # Grab the specific key value
+    pressed_key = data.get('key')
+    
+    # Print it to your Python console
+    print(f"Python received key: {pressed_key}")
+    
+    # Send a confirmation response back to the browser
+    return jsonify({"status": "success", "received": pressed_key}), 200
+    return render_template('music.html')
 
 @app.route('/control', methods=['POST'])
 def control():
     led = request.form.get('led')
     action = request.form.get('action')
 
-    # Handle the "blink all" routine completely and exit early
+    # Handle "blink all" routine
     if led == 'blink all':
         for target in [led1, led2, led3, led4, led5, led6]:
             target.on()
-            sleep(0.1)
+        sleep(0.1)
+        for target in [led1, led2, led3, led4, led5, led6]:
             target.off()
         return render_template('index.html')
+
+    # Handle buzzer melody routine
     elif led == 'buzzer':
-        buzzer.play(D4)
-        sleep(1)
-        buzzer.stop()
-        buzzer.play(A4)
-        sleep(.5)
-        buzzer.stop()
-        buzzer.play(F4)
-        sleep(1)
-        buzzer.stop()
+        if action == 'sound':
+            buzzer.play(D4)
+            sleep(1)
+            buzzer.stop()
+
+            buzzer.play(A4)
+            sleep(0.5)
+            buzzer.stop()
+
+            buzzer.play(F4)
+            sleep(1)
+            buzzer.stop()
+        if action == 'off':
+            while action == 'sound':
+               buzzer.stop()
+               sleep(0.1)
         return render_template('index.html')
 
     # Map individual LEDs
@@ -69,22 +106,22 @@ def control():
     elif led == '6':
         target = led6
     else:
-        return "Invalid LED", 400
+        return "Invalid LED selection", 400
 
     # Execute individual action
     if action == 'on':
         target.on()
     elif action == 'off':
         target.off()
-        buzzer.stop()
-    elif action == 'blink': 
+    elif action == 'blink':
         target.on()
         sleep(0.5)
         target.off()
-    elif action == 'sound':
-        buzzer.play(C4)
-
     return render_template('index.html')
 
+
+
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8080)

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>LED Control</title>
+    <title>Control</title>
 </head>
 <body>
-
-<h1>LED Control Panel</h1>
+<h1>Control Panel</h1>
 <h1>Play one of these buttons!</h1>
 
 <h2>Green</h2>
@@ -68,6 +67,20 @@
     <button name="action" value="sound">Play Sound</button>
     <button name="action" value="off">Stop Sound</button>
 </form>
+
+<h2>KeyBoard</h2>
+<p>
+    <a href="/music">
+        <button type="button">Go to Another Page</button>
+    </a>
+</p>
+
+<h2>LED</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="leds" value='leds'>
+    <button name="action" value="leds">Leds</button>
+</form>
+<a href="{{ url_for('leds') }}">Go to LED Controls</a>
 
 </body>
 </html>

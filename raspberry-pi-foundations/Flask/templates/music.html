@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music</title>
+</head>
+<body>
+    <h1>Welcome to keyboard music</h1>
+
+    <script>
+        window.addEventListener('keydown', (event) => {
+            // Prepare the payload
+            const payload = { key: event.key };
+
+            // Send an HTTP POST request to the Python backend
+            fetch('http://0.0.0.0', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Server response:', data))
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+    <a href="/">
+        <button type="button">Back to Home</button>
+    </a>
+</body>
+</html>
