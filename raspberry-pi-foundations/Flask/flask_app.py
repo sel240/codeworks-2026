@@ -89,7 +89,6 @@ def control():
         if action == 'off':
             while action == 'sound':
                buzzer.stop()
-               sleep(0.1)
         return render_template('index.html')
 
     # Map individual LEDs
