@@ -1,88 +1,244 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Control</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Controls</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+
+        .card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .header-subtitle {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            margin: 20px 0 10px 0;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .led-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .led-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #334155;
+            width: 90px;
+        }
+
+        /* Color Dot Indicators */
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-green  { background-color: #22c55e; }
+        .dot-yellow { background-color: #eab308; }
+        .dot-red    { background-color: #ef4444; }
+        .dot-white  { background-color: #cbd5e1; border: 1px solid #94a3b8; }
+        .dot-blue   { background-color: #3b82f6; }
+        .dot-orange { background-color: #f97316; }
+
+        .button-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn {
+            padding: 7px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.15s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-on    { background-color: #22c55e; color: white; }
+        .btn-on:hover { background-color: #16a34a; }
+
+        .btn-off   { background-color: #ef4444; color: white; }
+        .btn-off:hover { background-color: #dc2626; }
+
+        .btn-blink { background-color: #3b82f6; color: white; }
+        .btn-blink:hover { background-color: #2563eb; }
+
+        .btn-full {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+        }
+
+        .btn-secondary {
+            background-color: #0f172a;
+            color: white;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+        .btn-secondary:hover { background-color: #1e293b; }
+
+        .footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
 </head>
 <body>
-<h1>LED BLINKING</h1>
-<h1>Play one of these buttons!</h1>
-<h2>Green</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="1">
-    <button name="action" value="on">ON</button>
-    <button name="action" value="off">OFF</button>
-    <button name="action" value="blink">blink</button>
-</form>
 
-<h2>Yellow</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="2">
-    <button name="action" value="on">ON</button>
-    <button name="action" value="off">OFF</button>
-    <button name="action" value="blink">blink</button>
-</form>
+    <div class="card">
+        <h1 class="header-title">LED Control Matrix</h1>
+        <p class="header-subtitle">Select an LED or routine to execute</p>
 
-<h2>Red</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="3">
-    <button name="action" value="on">ON</button>
-    <button name="action" value="off">OFF</button>
-    <button name="action" value="blink">blink</button>
-</form>
+        <!-- Individual LEDs -->
+        <div class="section-title">Individual LEDs</div>
 
-<h2>White</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="4">
-    <button name="action" value="on">ON</button>
-    <button name="action" value="off">OFF</button>
-    <button name="action" value="blink">blink</button>
-</form>
+        <!-- Green -->
+        <div class="led-row">
+            <span class="led-label"><span class="dot dot-green"></span>Green</span>
+            <form method="POST" action="/leds" class="button-group">
+                <input type="hidden" name="led" value="1">
+                <button name="action" value="on" class="btn btn-on">ON</button>
+                <button name="action" value="off" class="btn btn-off">OFF</button>
+                <button name="action" value="blink" class="btn btn-blink">Blink</button>
+            </form>
+        </div>
 
-<h2>Blue</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="5">
-    <button name="action" value="on">ON</button>
-    <button name="action" value="off">OFF</button>
-    <button name="action" value="blink">blink</button>
-</form>
+        <!-- Yellow -->
+        <div class="led-row">
+            <span class="led-label"><span class="dot dot-yellow"></span>Yellow</span>
+            <form method="POST" action="/leds" class="button-group">
+                <input type="hidden" name="led" value="2">
+                <button name="action" value="on" class="btn btn-on">ON</button>
+                <button name="action" value="off" class="btn btn-off">OFF</button>
+                <button name="action" value="blink" class="btn btn-blink">Blink</button>
+            </form>
+        </div>
 
-<h2>Orange</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="6">
-    <button name="action" value="on">ON</button>
-    <button name="action" value="off">OFF</button>
-    <button name="action" value="blink">blink</button>
-</form>
+        <!-- Red -->
+        <div class="led-row">
+            <span class="led-label"><span class="dot dot-red"></span>Red</span>
+            <form method="POST" action="/leds" class="button-group">
+                <input type="hidden" name="led" value="3">
+                <button name="action" value="on" class="btn btn-on">ON</button>
+                <button name="action" value="off" class="btn btn-off">OFF</button>
+                <button name="action" value="blink" class="btn btn-blink">Blink</button>
+            </form>
+        </div>
 
-<h2>Blink all</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="blink all">
-    <button name="action" value="blink">blink</button>
-</form>
+        <!-- White -->
+        <div class="led-row">
+            <span class="led-label"><span class="dot dot-white"></span>White</span>
+            <form method="POST" action="/leds" class="button-group">
+                <input type="hidden" name="led" value="4">
+                <button name="action" value="on" class="btn btn-on">ON</button>
+                <button name="action" value="off" class="btn btn-off">OFF</button>
+                <button name="action" value="blink" class="btn btn-blink">Blink</button>
+            </form>
+        </div>
 
-<h2>Blink Green, Yellow, and Red</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="blink1">
-    <button name="action" value="blink">blink</button>
-</form>
+        <!-- Blue -->
+        <div class="led-row">
+            <span class="led-label"><span class="dot dot-blue"></span>Blue</span>
+            <form method="POST" action="/leds" class="button-group">
+                <input type="hidden" name="led" value="5">
+                <button name="action" value="on" class="btn btn-on">ON</button>
+                <button name="action" value="off" class="btn btn-off">OFF</button>
+                <button name="action" value="blink" class="btn btn-blink">Blink</button>
+            </form>
+        </div>
 
-<h2>Blink White, Blue, and Orange</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="led" value="blink2">
-    <button name="action" value="blink">blink</button>
-</form>
+        <!-- Orange -->
+        <div class="led-row">
+            <span class="led-label"><span class="dot dot-orange"></span>Orange</span>
+            <form method="POST" action="/leds" class="button-group">
+                <input type="hidden" name="led" value="6">
+                <button name="action" value="on" class="btn btn-on">ON</button>
+                <button name="action" value="off" class="btn btn-off">OFF</button>
+                <button name="action" value="blink" class="btn btn-blink">Blink</button>
+            </form>
+        </div>
 
+        <!-- Group Routines -->
+        <div class="section-title">Group Routines</div>
 
+        <form method="POST" action="/leds">
+            <input type="hidden" name="led" value="blink all">
+            <button name="action" value="blink" class="btn btn-blink btn-full">Blink All LEDs</button>
+        </form>
 
-<h2>Go Home</h2>
-<p>
-    <a href="/">
-        <button type="button">Back to Home</button>
-    </a>
-</p>
-</form>
+        <form method="POST" action="/leds">
+            <input type="hidden" name="led" value="blink1">
+            <button name="action" value="blink" class="btn btn-blink btn-full">Blink Green, Yellow & Red</button>
+        </form>
 
+        <form method="POST" action="/leds">
+            <input type="hidden" name="led" value="blink2">
+            <button name="action" value="blink" class="btn btn-blink btn-full">Blink White, Blue & Orange</button>
+        </form>
+
+        <!-- Navigation -->
+        <div class="footer">
+            <a href="/" class="btn btn-secondary btn-full">Back to Control Panel</a>
+        </div>
+    </div>
 
 </body>
 </html>
-

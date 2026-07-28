@@ -33,74 +33,9 @@ B4 = Tone(493.88)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
-
-
-@app.route('/music', methods=['GET', 'POST'])
-def music():
-    # Handle incoming JavaScript fetch/POST requests safely
-    if request.method == 'POST':
-        data = request.get_json() or {}
-        pressed_key = data.get('key')
-        print(f"Python received key: {pressed_key}")
-        return jsonify({"status": "success", "received": pressed_key}), 200
-
-    return render_template('music.html')
-
-    # Play tone on buzzer if key matches
-    if pressed_key == 'C':
-        buzzer.play(C4)
-        sleep(0.2)
-        buzzer.stop()
-    elif pressed_key == 'D':
-        buzzer.play(D4)
-        sleep(0.2)
-        buzzer.stop()
-
-    return jsonify({"status": "success", "received": pressed_key}), 200
-
-    # GET request: render the music page in browser
-    return render_template('music.html')
-
-
-@app.route('/leds', methods=['GET', 'POST'])
-def control():
-    # Direct GET requests render the page without triggering LED errors
-    if request.method == 'GET':
-        return render_template('control.html')
-
     led = request.form.get('led')
     action = request.form.get('action')
-
-    # 1. Handle "Blink All" routine
-    if led == 'blink all':
-        for target in leds.values():
-            target.on()
-        sleep(0.1)
-        for target in leds.values():
-            target.off()
-        return render_template('control.html')
-
-    # 2. Handle group "blink1" (First 3 LEDs: Green, Yellow, Red)
-    if led == 'blink1':
-        for key in ['1', '2', '3']:
-            leds[key].on()
-        sleep(0.1)
-        for key in ['1', '2', '3']:
-            leds[key].off()
-        return render_template('control.html')
-
-    if led == 'blink2':
-        for key in ['4', '5', '6']:
-            leds[key].on()
-        sleep(0.1)
-        for key in ['4', '5', '6']:
-            leds[key].off()
-        return render_template('control.html')
-
-
-
-    # 3. Handle Buzzer Sequence
+        # 3. Handle Buzzer Sequence
     if led == 'buzzer':
         if action == 'sound':
             buzzer.play(D4)
@@ -129,11 +64,85 @@ def control():
             target.on()
             sleep(0.5)
             target.off()
+        return render_template('index.html')
+
+    return render_template('index.html')
+
+#Key Mapping
+KEY_MAPPING = {
+'D': ('1', C4),
+'F': ('2', D4),
+'G': ('3', E4),
+'H': ('4', F4),
+'J': ('5', G4),
+'K': ('6', A4),
+}
+
+@app.route('/music', methods=['GET', 'POST'])
+def music():
+    if request.method == 'POST':
+        data = request.get_json() or {}
+        pressed_key = data.get('key', '').upper()
+
+        print(f"Python received key: {pressed_key}")
+
+        if pressed_key in KEY_MAPPING:
+            led_target, tone_target = KEY_MAPPING[pressed_key]
+
+            # Light up the LED and play tone
+            led_target.on()
+            buzzer.play(tone_target)
+
+            # Keep active briefly for short keypress feel
+            sleep(0.2)
+
+            # Turn off LED and stop tone
+            buzzer.stop()
+            led_target.off()
+
+            return jsonify({"status": "success", "played": pressed_key}), 200
+        else:
+            return jsonify({"status": "ignored", "reason": "unmapped key"}), 400
+
+    # GET Request: Render the page
+    return render_template('music.html')
+
+@app.route('/leds', methods=['GET', 'POST'])
+def control():
+    # Direct GET requests render the page without triggering LED errors
+    if request.method == 'GET':
         return render_template('control.html')
 
-    # Catch-all for unmapped inputs
-    return "Invalid LED selection", 400
+    # 1. Handle "Blink All" routine
+    if led == 'blink all':
+        for target in leds.values():
+            target.on()
+        sleep(0.1)
+        for target in leds.values():
+            target.off()
+        return render_template('control.html')
 
+    # 2. Handle group "blink1" (First 3 LEDs: Green, Yellow, Red)
+    if led == 'blink1':
+        for key in ['1', '2', '3']:
+            leds[key].on()
+        sleep(0.1)
+        for key in ['1', '2', '3']:
+            leds[key].off()
+        return render_template('control.html')
+
+    if led == 'blink2':
+        for key in ['4', '5', '6']:
+            leds[key].on()
+        sleep(0.1)
+        for key in ['4', '5', '6']:
+            leds[key].off()
+        return render_template('control.html')
+
+        # Catch-all for unmapped inputs
+        return "Invalid LED selection", 400
+
+        return render_template('control.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)

@@ -2,31 +2,108 @@
 <html>
 <head>
     <title>Music</title>
+    <h1>Welcome to keyboard music</h1>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            padding-top: 50px;
+        }
+        .piano-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .key {
+            width: 70px;
+            height: 140px;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-weight: bold;
+            font-size: 20px;
+            transition: background-color 0.1s, transform 0.1s;
+        }
+        .key.active {
+            background-color: #4CAF50;
+            color: white;
+            transform: translateY(4px);
+        }
+        .key span {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .key.active span {
+            color: #eee;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to keyboard music</h1>
 
+    <h1>Raspberry Pi Piano</h1>
+    <p>Press keys <strong>D, F, G, H, J, K</strong> on your keyboard to play tones and light up LEDs!</p>
+
+    <div class="piano-container">
+        <div class="key" id="key-D">D <span>LED 1 (C4)</span></div>
+        <div class="key" id="key-F">F <span>LED 2 (D4)</span></div>
+        <div class="key" id="key-G">G <span>LED 3 (E4)</span></div>
+        <div class="key" id="key-H">H <span>LED 4 (F4)</span></div>
+        <div class="key" id="key-J">J <span>LED 5 (G4)</span></div>
+        <div class="key" id="key-K">K <span>LED 6 (A4)</span></div>
+    </div>
+    
     <script>
-        window.addEventListener('keydown', (event) => {
-            // Prepare the payload
-            const payload = { key: event.key };
+        const validKeys = ['d', 'f', 'g', 'h', 'j', 'k'];
+        let activeKey = null;
 
-            // Send an HTTP POST request to the Python backend
-            fetch('http://0.0.0.0', {
+        window.addEventListener('keydown', (event) => {
+            const key = event.key.toLowerCase();
+
+            // Ignore key repeat when holding the key down, and ignore irrelevant keys
+            if (event.repeat || !validKeys.includes(key)) return;
+
+            const upperKey = key.toUpperCase();
+            const keyElement = document.getElementById(`key-${upperKey}`);
+
+            if (keyElement) {
+                keyElement.classList.add('active');
+            }
+
+            // Send key input to Flask server
+            fetch('/music', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({ key: upperKey })
             })
             .then(response => response.json())
             .then(data => console.log('Server response:', data))
             .catch(error => console.error('Error:', error));
         });
-    </script>
 
-    <a href="/">
-        <button type="button">Back to Home</button>
-    </a>
+        window.addEventListener('keyup', (event) => {
+            const upperKey = event.key.toUpperCase();
+            const keyElement = document.getElementById(`key-${upperKey}`);
+            if (keyElement) {
+                keyElement.classList.remove('active');
+            }
+        });
+    </script>    
+    <p>
+        <a href="/">
+            <button type="button">Back to Home</button>
+        </a>
+    </p>
 </body>
 </html>
