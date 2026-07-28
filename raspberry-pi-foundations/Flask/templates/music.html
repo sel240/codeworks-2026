@@ -51,19 +51,21 @@
 <body>
 
     <h1>Raspberry Pi Piano</h1>
-    <p>Press keys <strong>D, F, G, H, J, K</strong> on your keyboard to play tones and light up LEDs!</p>
+    <p>Press keys <strong>S, D, F, G, H, J, K, L</strong> on your keyboard to play tones and light up LEDs!</p>
 
     <div class="piano-container">
-        <div class="key" id="key-D">D <span>LED 1 (C4)</span></div>
-        <div class="key" id="key-F">F <span>LED 2 (D4)</span></div>
-        <div class="key" id="key-G">G <span>LED 3 (E4)</span></div>
-        <div class="key" id="key-H">H <span>LED 4 (F4)</span></div>
-        <div class="key" id="key-J">J <span>LED 5 (G4)</span></div>
-        <div class="key" id="key-K">K <span>LED 6 (A4)</span></div>
+        <div class="key" id="key-S">S <span>LED 1 (C4)</span></div>
+        <div class="key" id="key-D">D <span>LED 2 (D4)</span></div>
+        <div class="key" id="key-F">F <span>LED 3 (E4)</span></div>
+        <div class="key" id="key-G">G <span>LED 4 (F4)</span></div>
+        <div class="key" id="key-H">H <span>LED 5 (G4)</span></div>
+        <div class="key" id="key-J">J <span>LED 6 (A4)</span></div>
+        <div class="key" id="key-K">K <span>LED 7 (B4)</span></div>
+        <div class="key" id="key-L">L <span>LED 8 (C5)</span></div>
     </div>
     
     <script>
-        const validKeys = ['d', 'f', 'g', 'h', 'j', 'k'];
+        const validKeys = ['s', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
         let activeKey = null;
 
         window.addEventListener('keydown', (event) => {
