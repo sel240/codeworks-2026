@@ -71,16 +71,15 @@
 <h2>KeyBoard</h2>
 <p>
     <a href="/music">
-        <button type="button">Go to Another Page</button>
+        <button type="button">Keyboard</button>
     </a>
 </p>
 
 <h2>LED</h2>
-<form method="POST" action="/leds">
-    <input type="hidden" name="leds" value='leds'>
-    <button name="action" value="leds">Leds</button>
-</form>
-<a href="{{ url_for('leds') }}">Go to LED Controls</a>
-
+<p>
+    <a href="/leds">
+        <button type="button">Go to LED Controls</button>
+    </a>
+</p>
 </body>
 </html>
