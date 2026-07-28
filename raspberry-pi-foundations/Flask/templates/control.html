@@ -4,19 +4,84 @@
     <title>Control</title>
 </head>
 <body>
-<a href="{{ url_for('index') }}">Back to Home</a>
 <h1>LED BLINKING</h1>
 <h1>Play one of these buttons!</h1>
-
 <h2>Green</h2>
-<form method="POST" action="/control">
+<form method="POST" action="/leds">
     <input type="hidden" name="led" value="1">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
     <button name="action" value="blink">blink</button>
 </form>
 
-<a href="/">
+<h2>Yellow</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="led" value="2">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Red</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="led" value="3">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>White</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="led" value="4">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Blue</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="led" value="5">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Orange</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="led" value="6">
+    <button name="action" value="on">ON</button>
+    <button name="action" value="off">OFF</button>
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Blink all</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="led" value="blink all">
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Blink Green, Yellow, and Red</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="led" value="blink1">
+    <button name="action" value="blink">blink</button>
+</form>
+
+<h2>Blink White, Blue, and Orange</h2>
+<form method="POST" action="/leds">
+    <input type="hidden" name="led" value="blink2">
+    <button name="action" value="blink">blink</button>
+</form>
+
+
+
+<h2>Go Home</h2>
+<p>
+    <a href="/">
         <button type="button">Back to Home</button>
-</a>
+    </a>
+</p>
+</form>
+
 
 </body>
 </html>
