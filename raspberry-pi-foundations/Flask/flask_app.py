@@ -91,7 +91,6 @@ except Exception as e:
 def index():
     return render_template('index.html')
 
-
 @app.route('/music', methods=['GET', 'POST'])
 def music():
     if request.method == 'POST':
@@ -121,8 +120,7 @@ def music():
     # GET Request: Render the keyboard page
     return render_template('music.html')
 
-
-@app.route('/leds', methods=['GET', 'POST'])
+@app.route('/control', methods=['GET', 'POST'])
 def control():
     if request.method == 'GET':
         return render_template('control.html')
@@ -139,23 +137,24 @@ def control():
             target.off()
         return render_template('control.html')
 
-    # 2. Handle group "blink1" (Green, Yellow, Red)
-    if led == 'blink1':
-        for key in ['1', '2', '3']:
-            leds[key].on()
-        sleep(0.1)
-        for key in ['1', '2', '3']:
-            leds[key].off()
-        return render_template('control.html')
+    # Handle buzzer melody routine
+    elif led == 'buzzer':
+        if action == 'sound':
+            buzzer.play(D4)
+            sleep(1)
+            buzzer.pause()
 
-    # 3. Handle group "blink2" (White, Blue, Orange)
-    if led == 'blink2':
-        for key in ['4', '5', '6']:
-            leds[key].on()
-        sleep(0.1)
-        for key in ['4', '5', '6']:
-            leds[key].off()
-        return render_template('control.html')
+            buzzer.play(A4)
+            sleep(0.5)
+            buzzer.pause()
+
+            buzzer.play(F4)
+            sleep(1)
+            buzzer.pause()
+        if action == 'off':
+            while action == 'sound':
+               buzzer.stop()
+        return render_template('index.html')
 
     # 4. Handle Individual LEDs ('1' through '6')
     if led in leds:

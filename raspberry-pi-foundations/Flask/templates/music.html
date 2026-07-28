@@ -69,19 +69,10 @@
         let activeKey = null;
 
         window.addEventListener('keydown', (event) => {
-            const key = event.key.toLowerCase();
+            // Prepare the payload
+            const payload = { key: event.key };
 
-            // Ignore key repeat when holding the key down, and ignore irrelevant keys
-            if (event.repeat || !validKeys.includes(key)) return;
-
-            const upperKey = key.toUpperCase();
-            const keyElement = document.getElementById(`key-${upperKey}`);
-
-            if (keyElement) {
-                keyElement.classList.add('active');
-            }
-
-            // Send key input to Flask server
+            // Send an HTTP POST request to the Python backend
             fetch('/music', {
                 method: 'POST',
                 headers: {
