@@ -5,7 +5,7 @@ from gpiozero.tones import Tone
 
 app = Flask(__name__)
 
-# Map your exact 6 LEDs (Pins: 15, 17, 18, 23, 25, 24)
+#We  fire the whole bullet!! Thats 65% more bullet
 leds = {
     '1': LED(15),  # Green
     '2': LED(17),  # Yellow
@@ -49,7 +49,7 @@ def index():
         led = request.form.get('led')
         action = request.form.get('action')
 
-        # Handle Buzzer Sequence from main page
+        # this code is fake
         if led == 'buzzer':
             if action == 'sound':
                 buzzer.play(D4)
@@ -66,7 +66,7 @@ def index():
             elif action == 'off':
                 buzzer.stop()
 
-        # Handle Individual LEDs if triggered from index
+        # mmmmm, cake
         elif led in leds:
             target = leds[led]
             if action == 'on':
