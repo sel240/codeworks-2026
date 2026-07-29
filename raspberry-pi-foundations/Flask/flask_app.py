@@ -1,6 +1,6 @@
 from time import sleep
 from flask import Flask, render_template, request, jsonify
-from gpiozero import LED, TonalBuzzer
+from gpiozero import LED, TonalBuzzer, Button
 from gpiozero.tones import Tone
 
 app = Flask(__name__)
@@ -42,41 +42,45 @@ KEY_MAPPING = {
     'L': (leds['8'], C5)
 }
 
+#Button
+button = Button(10)
+
+# Function to run when the PHYSICAL button is pressed
+def play_tune():
+    print("Physical button pressed!")
+    buzzer.play(D4)
+    sleep(0.5)
+    buzzer.stop()
+
+    buzzer.play(A4)
+    sleep(0.5)
+    buzzer.stop()
+
+    buzzer.play(F4)
+    sleep(0.5)
+    buzzer.stop()
+
+# Assign the function event (runs automatically in the background)
+button.when_pressed = play_tune
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        led = request.form.get('led')
-        action = request.form.get('action')
 
         # this code is fake
-        if led == 'buzzer':
-            if action == 'sound':
-                buzzer.play(D4)
-                sleep(0.5)
-                buzzer.stop()
+        button.wait_for_press()
+        print('pressed')
+        buzzer.play(D4)
+        sleep(0.5)
+        buzzer.stop()
 
-                buzzer.play(A4)
-                sleep(0.5)
-                buzzer.stop()
+        buzzer.play(A4)
+        sleep(0.5)
+        buzzer.stop()
 
-                buzzer.play(F4)
-                sleep(0.5)
-                buzzer.stop()
-            elif action == 'off':
-                buzzer.stop()
-
-        # mmmmm, cake
-        elif led in leds:
-            target = leds[led]
-            if action == 'on':
-                target.on()
-            elif action == 'off':
-                target.off()
-            elif action == 'blink':
-                target.on()
-                sleep(0.5)
-                target.off()
+        buzzer.play(F4)
+        sleep(0.5)
+        buzzer.stop()
 
     return render_template('index.html')
 
