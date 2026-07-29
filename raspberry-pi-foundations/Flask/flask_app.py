@@ -42,46 +42,53 @@ KEY_MAPPING = {
     'L': (leds['8'], C5)
 }
 
-#Button
-button = Button(10)
+# Optional Physical Hardware Button on GPIO 10
+try:
+    button = Button(10)
 
-# Function to run when the PHYSICAL button is pressed
-def play_tune():
-    print("Physical button pressed!")
-    buzzer.play(D4)
-    sleep(0.5)
-    buzzer.stop()
-
-    buzzer.play(A4)
-    sleep(0.5)
-    buzzer.stop()
-
-    buzzer.play(F4)
-    sleep(0.5)
-    buzzer.stop()
-
-# Assign the function event (runs automatically in the background)
-button.when_pressed = play_tune
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-
-        # this code is fake
-        button.wait_for_press()
-        print('pressed')
-        buzzer.play(D4)
+    # Callback function for physical button press
+    def on_physical_button_press():
+        print("pressed")
+        buzzer.play(C4)
         sleep(0.5)
         buzzer.stop()
 
-        buzzer.play(A4)
-        sleep(0.5)
+        buzzer.play(G4)
+        sleep(0.3)
+        buzzer.stop()
+
+        buzzer.play(F4)
+        sleep(0.4)
+        buzzer.stop()
+
+        buzzer.play(C4)
+        sleep(0.4)
+        buzzer.stop()
+
+        buzzer.play(E4)
+        sleep(0.35)
+        buzzer.stop()
+
+        buzzer.play(C4)
+        sleep(0.3)
+        buzzer.stop()
+
+        buzzer.play(E4)
+        sleep(0.4)
         buzzer.stop()
 
         buzzer.play(F4)
         sleep(0.5)
         buzzer.stop()
 
+
+    button.when_pressed = on_physical_button_press
+except Exception as e:
+    print(f"Button initialization note: {e}")
+
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
     return render_template('index.html')
 
 
