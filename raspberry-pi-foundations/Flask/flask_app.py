@@ -28,7 +28,7 @@ F4 = Tone(349.23)
 G4 = Tone(392.00)
 A4 = Tone(440.00)
 B4 = Tone(493.88)
-C5 = Tone(261.63 * 2)
+C5 = Tone(523.25)
 
 # Key Mapping maps keypresses to LED object + Tone object
 KEY_MAPPING = {
@@ -48,7 +48,7 @@ try:
 
     # Callback function for physical button press
     def on_physical_button_press():
-        print("pressed")
+        print("Undertale be like:")
         buzzer.play(C4)
         sleep(0.5)
         buzzer.stop()
@@ -80,7 +80,6 @@ try:
         buzzer.play(F4)
         sleep(0.5)
         buzzer.stop()
-
 
     button.when_pressed = on_physical_button_press
 except Exception as e:
@@ -137,26 +136,7 @@ def control():
             target.off()
         return render_template('control.html')
 
-    # Handle buzzer melody routine
-    elif led == 'buzzer':
-        if action == 'sound':
-            buzzer.play(D4)
-            sleep(1)
-            buzzer.pause()
-
-            buzzer.play(A4)
-            sleep(0.5)
-            buzzer.pause()
-
-            buzzer.play(F4)
-            sleep(1)
-            buzzer.pause()
-        if action == 'off':
-            while action == 'sound':
-               buzzer.stop()
-        return render_template('index.html')
-
-    # 4. Handle Individual LEDs ('1' through '6')
+    # blinks all LEDs, like ALL LEDS
     if led in leds:
         target = leds[led]
         if action == 'on':

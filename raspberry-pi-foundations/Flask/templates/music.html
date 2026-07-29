@@ -46,6 +46,28 @@
         .key.active span {
             color: #eee;
         }
+        .btn {
+            padding: 7px 12px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.15s, transform 0.1s;
+        }
+        .btn-secondary {
+            background-color: #0f172a;
+            color: white;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+        .btn-secondary:hover { background-color: #1e293b; }
+        .footer {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
     </style>
 </head>
 <body>
@@ -93,10 +115,8 @@
             }
         });
     </script>    
-    <p>
-        <a href="/">
-            <button type="button">Back to Home</button>
-        </a>
-    </p>
+    <div class="footer">
+        <a href="/" class="btn btn-secondary">Back to Control Panel</a>
+    </div>
 </body>
 </html>
