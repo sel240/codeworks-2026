@@ -110,10 +110,10 @@
             transform: scale(0.96);
         }
 
-        .btn-on    { background-color: #22c55e; color: white; }
+        .btn-on     { background-color: #22c55e; color: white; }
         .btn-on:hover { background-color: #16a34a; }
 
-        .btn-off   { background-color: #ef4444; color: white; }
+        .btn-off    { background-color: #ef4444; color: white; }
         .btn-off:hover { background-color: #dc2626; }
 
         .btn-blink { background-color: #3b82f6; color: white; }
@@ -153,7 +153,7 @@
         <!-- Green -->
         <div class="led-row">
             <span class="led-label"><span class="dot dot-green"></span>Green</span>
-            <form method="POST" action="/leds" class="button-group">
+            <form method="POST" action="/control" class="button-group">
                 <input type="hidden" name="led" value="1">
                 <button name="action" value="on" class="btn btn-on">ON</button>
                 <button name="action" value="off" class="btn btn-off">OFF</button>
@@ -164,7 +164,7 @@
         <!-- Yellow -->
         <div class="led-row">
             <span class="led-label"><span class="dot dot-yellow"></span>Yellow</span>
-            <form method="POST" action="/leds" class="button-group">
+            <form method="POST" action="/control" class="button-group">
                 <input type="hidden" name="led" value="2">
                 <button name="action" value="on" class="btn btn-on">ON</button>
                 <button name="action" value="off" class="btn btn-off">OFF</button>
@@ -175,7 +175,7 @@
         <!-- Red -->
         <div class="led-row">
             <span class="led-label"><span class="dot dot-red"></span>Red</span>
-            <form method="POST" action="/leds" class="button-group">
+            <form method="POST" action="/control" class="button-group">
                 <input type="hidden" name="led" value="3">
                 <button name="action" value="on" class="btn btn-on">ON</button>
                 <button name="action" value="off" class="btn btn-off">OFF</button>
@@ -186,7 +186,7 @@
         <!-- White -->
         <div class="led-row">
             <span class="led-label"><span class="dot dot-white"></span>White</span>
-            <form method="POST" action="/leds" class="button-group">
+            <form method="POST" action="/control" class="button-group">
                 <input type="hidden" name="led" value="4">
                 <button name="action" value="on" class="btn btn-on">ON</button>
                 <button name="action" value="off" class="btn btn-off">OFF</button>
@@ -197,7 +197,7 @@
         <!-- Blue -->
         <div class="led-row">
             <span class="led-label"><span class="dot dot-blue"></span>Blue</span>
-            <form method="POST" action="/leds" class="button-group">
+            <form method="POST" action="/control" class="button-group">
                 <input type="hidden" name="led" value="5">
                 <button name="action" value="on" class="btn btn-on">ON</button>
                 <button name="action" value="off" class="btn btn-off">OFF</button>
@@ -208,8 +208,9 @@
         <!-- Orange -->
         <div class="led-row">
             <span class="led-label"><span class="dot dot-orange"></span>Orange</span>
-            <form method="POST" action="/leds" class="button-group">
+            <form method="POST" action="/control" class="button-group">
                 <input type="hidden" name="led" value="6">
+                <button name="action" value="led" value="6">
                 <button name="action" value="on" class="btn btn-on">ON</button>
                 <button name="action" value="off" class="btn btn-off">OFF</button>
                 <button name="action" value="blink" class="btn btn-blink">Blink</button>
@@ -219,17 +220,17 @@
         <!-- Group Routines -->
         <div class="section-title">Group Routines</div>
 
-        <form method="POST" action="/leds">
+        <form method="POST" action="/control">
             <input type="hidden" name="led" value="blink all">
             <button name="action" value="blink" class="btn btn-blink btn-full">Blink All LEDs</button>
         </form>
 
-        <form method="POST" action="/leds">
+        <form method="POST" action="/control">
             <input type="hidden" name="led" value="blink1">
             <button name="action" value="blink" class="btn btn-blink btn-full">Blink Green, Yellow & Red</button>
         </form>
 
-        <form method="POST" action="/leds">
+        <form method="POST" action="/control">
             <input type="hidden" name="led" value="blink2">
             <button name="action" value="blink" class="btn btn-blink btn-full">Blink White, Blue & Orange</button>
         </form>

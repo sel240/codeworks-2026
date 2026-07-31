@@ -5,7 +5,7 @@ from gpiozero.tones import Tone
 
 app = Flask(__name__)
 
-#We  fire the whole bullet!! Thats 65% more bullet
+# LED setup mapping 8 LEDs
 leds = {
     '1': LED(15),  # Green
     '2': LED(17),  # Yellow
@@ -13,7 +13,7 @@ leds = {
     '4': LED(23),  # White
     '5': LED(25),  # Blue
     '6': LED(24),  # Orange
-    '7': LED(22),   # Green
+    '7': LED(22),  # Green
     '8': LED(3)    # Blue
 }
 
@@ -46,7 +46,6 @@ KEY_MAPPING = {
 try:
     button = Button(10)
 
-    # Callback function for physical button press
     def on_physical_button_press():
         print("Undertale be like:")
         buzzer.play(C4)
@@ -86,7 +85,7 @@ except Exception as e:
     print(f"Button initialization note: {e}")
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
@@ -101,14 +100,9 @@ def music():
         if pressed_key in KEY_MAPPING:
             led_target, tone_target = KEY_MAPPING[pressed_key]
 
-            # Light up the LED and play tone
             led_target.on()
             buzzer.play(tone_target)
-
-            # Keep active briefly for short keypress feel
             sleep(0.1)
-
-            # Turn off LED and stop tone
             buzzer.stop()
             led_target.off()
 
@@ -116,7 +110,6 @@ def music():
         else:
             return jsonify({"status": "ignored", "reason": "unmapped key"}), 400
 
-    # GET Request: Render the keyboard page
     return render_template('music.html')
 
 @app.route('/control', methods=['GET', 'POST'])
@@ -131,12 +124,32 @@ def control():
     if led == 'blink all':
         for target in leds.values():
             target.on()
-        sleep(0.1)
+        sleep(0.5)
         for target in leds.values():
             target.off()
         return render_template('control.html')
 
-    # blinks all LEDs, like ALL LEDS
+    # 2. Handle Group Routine 1 (Green, Yellow, Red -> leds 1, 2, 3)
+    if led == 'blink1':
+        group = [leds['1'], leds['2'], leds['3']]
+        for target in group:
+            target.on()
+        sleep(0.5)
+        for target in group:
+            target.off()
+        return render_template('control.html')
+
+    # 3. Handle Group Routine 2 (White, Blue, Orange -> leds 4, 5, 6)
+    if led == 'blink2':
+        group = [leds['4'], leds['5'], leds['6']]
+        for target in group:
+            target.on()
+        sleep(0.5)
+        for target in group:
+            target.off()
+        return render_template('control.html')
+
+    # Individual LED control
     if led in leds:
         target = leds[led]
         if action == 'on':
@@ -153,5 +166,4 @@ def control():
 
 
 if __name__ == '__main__':
-#    app.run(host='0.0.0.0', port=8080)
     app.run(host='0.0.0.0', port=8180)

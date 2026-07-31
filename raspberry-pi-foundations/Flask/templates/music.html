@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Music</title>
-    <h1>Welcome to keyboard music</h1>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music - Raspberry Pi Piano</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,12 +59,13 @@
             background-color: #0f172a;
             color: white;
             text-decoration: none;
-            display: block;
+            display: inline-block;
             text-align: center;
+            padding: 10px 20px;
         }
         .btn-secondary:hover { background-color: #1e293b; }
         .footer {
-            margin-top: 20px;
+            margin-top: 40px;
             padding-top: 15px;
             border-top: 1px solid #e2e8f0;
         }
@@ -88,11 +89,17 @@
     
     <script>
         const validKeys = ['s', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
-        let activeKey = null;
 
         window.addEventListener('keydown', (event) => {
-            // Prepare the payload
-            const payload = { key: event.key };
+            const upperKey = event.key.toUpperCase();
+            
+            // Check if valid key and prevent holding down triggering multiple requests
+            if (!validKeys.includes(event.key.toLowerCase())) return;
+
+            const keyElement = document.getElementById(`key-${upperKey}`);
+            if (keyElement) {
+                keyElement.classList.add('active');
+            }
 
             // Send an HTTP POST request to the Python backend
             fetch('/music', {
@@ -115,6 +122,7 @@
             }
         });
     </script>    
+    
     <div class="footer">
         <a href="/" class="btn btn-secondary">Back to Control Panel</a>
     </div>
