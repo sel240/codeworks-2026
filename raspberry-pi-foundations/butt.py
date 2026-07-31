@@ -6,7 +6,7 @@ import signal  # Used to keep the program running smoothly
 
 # Initialize components
 buzzer = TonalBuzzer(8)
-button = Button(2)
+button = Button(10)
 
 def play_rickroll():
     """Plays the opening melody of 'Never Gonna Give You Up'"""
